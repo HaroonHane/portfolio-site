@@ -1,26 +1,532 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.625rem;
+  --background: oklch(0.97 0.01 280);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(0.95 0.02 280 / 70%);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(0.95 0.02 280);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.5 0.37 328); /* Pink color #9004cc */
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.85 0.2 85); /* Yellow color */
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.92 0.02 280);
+  --muted-foreground: oklch(0.35 0 0);
+  --accent: oklch(0.92 0.02 280);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.85 0.02 280 / 40%);
+  --input: oklch(0.85 0.02 280);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.95 0.02 280 / 80%);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.5 0.37 328); /* Pink color #9004cc */
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.92 0.02 280);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.85 0.02 280 / 40%);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0 / 50%);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.85 0.2 85); /* Gold color in dark mode */
+  --primary-foreground: oklch(0.145 0 0);
+  --secondary: oklch(0.5 0.37 328); /* Pink as secondary in dark mode */
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 15%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0 / 80%);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.85 0.2 85); /* Gold color in dark mode */
+  --sidebar-primary-foreground: oklch(0.145 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 15%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    height: 100%;
+    overscroll-behavior: none;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    overscroll-behavior-y: none;
+    scroll-snap-type: y proximity;
+  }
+
+  /* Light mode subtle texture */
+  :root body {
+    background-image: linear-gradient(
+        to right,
+        rgba(144, 4, 204, 0.03) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(144, 4, 204, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background/50;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 rounded-full transition-colors;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/50;
+  }
+
+  /* Glass card effect */
+  .glass-card {
+    @apply bg-card backdrop-blur-md border-border/40 shadow-lg h-full;
+    max-width: 100%;
+  }
+
+  /* Light mode specific glass card enhancement */
+  :root .glass-card {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(144, 4, 204, 0.15);
+    background-color: rgba(240, 235, 245, 0.8);
+    backdrop-filter: blur(12px);
+  }
+
+  /* Add a subtle inner shadow for depth in light mode */
+  :root .card {
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8),
+      0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Dark mode glass card styling */
+  .dark .glass-card {
+    background-color: rgba(20, 20, 25, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(144, 4, 204, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Contact card specific styling */
+  .contact-card {
+    transition: all 0.3s ease;
+  }
+
+  .dark .contact-card {
+    background-color: rgba(25, 25, 35, 0.75) !important;
+    border: 1px solid rgba(144, 4, 204, 0.15) !important;
+  }
+
+  /* Card content consistent sizing */
+  .card-content {
+    @apply p-2 sm:p-3 md:p-4 h-full flex flex-col;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow: visible;
+    max-width: 100%;
+    gap: 0.25rem;
+    padding-bottom: 0.5rem !important;
+  }
+
+  /* Smaller card variant */
+  .card-sm {
+    @apply max-w-sm;
+  }
+
+  /* Medium card variant */
+  .card-md {
+    @apply max-w-md;
+  }
+
+  /* Project card specific styling */
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0 !important;
+  }
+
+  .project-card .card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 0.5rem !important;
+    min-height: 0;
+    flex: 1;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+
+  /* Highlight text */
+  .highlight {
+    @apply text-primary font-semibold;
+  }
+
+  .dark .highlight {
+    @apply text-primary font-semibold;
+  }
+
+  /* Email text handling */
+  .email-text {
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    max-width: 100%;
+    display: inline-block;
+    hyphens: auto;
+  }
+
+  /* Form input styling for light mode */
+  :root .contact-input {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid rgba(144, 4, 204, 0.2) !important;
+    color: #333 !important;
+    box-shadow: 0 2px 6px rgba(144, 4, 204, 0.05);
+    transition: all 0.2s ease-out;
+  }
+
+  :root .contact-input:hover:not(:focus) {
+    border-color: rgba(144, 4, 204, 0.3) !important;
+    background-color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  :root .contact-input:focus {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border-color: rgba(144, 4, 204, 0.5) !important;
+    box-shadow: 0 0 0 2px rgba(144, 4, 204, 0.2) !important;
+    outline: none !important;
+    transform: translateY(-1px);
+  }
+
+  :root .contact-input::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+  /* Dark mode input styling */
+  .dark .contact-input {
+    background-color: rgba(25, 25, 35, 0.6) !important;
+    border-color: rgba(144, 4, 204, 0.2) !important;
+    color: var(--foreground) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .dark .contact-input:hover:not(:focus) {
+    background-color: rgba(30, 30, 40, 0.7) !important;
+    border-color: rgba(144, 4, 204, 0.3) !important;
+  }
+
+  .dark .contact-input:focus {
+    background-color: rgba(35, 35, 45, 0.8) !important;
+    border-color: rgba(144, 4, 204, 0.5) !important;
+    box-shadow: 0 0 0 2px rgba(144, 4, 204, 0.2) !important;
+    outline: none !important;
+    transform: translateY(-1px);
+  }
+
+  .dark .contact-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* Form label styling for light mode */
+  :root .contact-label {
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.35rem;
+  }
+
+  /* Keep dark mode labels unchanged */
+  .dark .contact-label {
+    color: var(--foreground);
+  }
+
+  /* Form title styling for light mode */
+  :root .contact-form-title {
+    color: rgba(0, 0, 0, 0.9);
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+  }
+
+  :root .contact-form-title::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: rgba(144, 4, 204, 0.6);
+    border-radius: 2px;
+  }
+
+  /* Dark mode form title styling */
+  .dark .contact-form-title {
+    color: var(--foreground);
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+  }
+
+  .dark .contact-form-title::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: rgba(144, 4, 204, 0.8);
+    border-radius: 2px;
+  }
+
+  /* Background animation */
+  .background-animation {
+    @apply fixed inset-0 -z-10 overflow-hidden;
+  }
+
+  .dot {
+    @apply absolute rounded-full bg-primary/10;
+    width: 40px;
+    height: 40px;
+    animation: float 15s infinite ease-in-out;
+  }
+
+  .dot:nth-child(1) {
+    top: 10%;
+    left: 20%;
+    animation-delay: 0s;
+  }
+
+  .dot:nth-child(2) {
+    top: 40%;
+    left: 70%;
+    width: 60px;
+    height: 60px;
+    animation-delay: 2s;
+  }
+
+  .dot:nth-child(3) {
+    top: 80%;
+    left: 30%;
+    width: 50px;
+    height: 50px;
+    animation-delay: 4s;
+  }
+
+  .dot:nth-child(4) {
+    top: 20%;
+    left: 80%;
+    width: 35px;
+    height: 35px;
+    animation-delay: 6s;
+  }
+
+  .dot:nth-child(5) {
+    top: 60%;
+    left: 10%;
+    width: 45px;
+    height: 45px;
+    animation-delay: 8s;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) translateX(0);
+    }
+    25% {
+      transform: translateY(-20px) translateX(10px);
+    }
+    50% {
+      transform: translateY(0) translateX(20px);
+    }
+    75% {
+      transform: translateY(20px) translateX(10px);
+    }
+  }
+
+  /* Scroll container */
+  .scroll-container {
+    @apply w-full;
+    scroll-behavior: smooth;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    height: 100%;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+
+  /* Section styling */
+  .section {
+    @apply min-h-[calc(100vh-4rem)] scroll-mt-16 px-4 md:px-6 lg:px-8;
+    width: 100% !important;
+    scroll-behavior: smooth;
+    transition: opacity 0.3s ease-out, transform 0.2s ease-out;
+    will-change: transform, opacity;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    margin: 0 auto;
+    line-height: 1.4;
+    height: auto;
+  }
+
+  /* Custom cursor */
+  .cursor-dot {
+    @apply fixed w-3 h-3 rounded-full bg-primary z-[9999] pointer-events-none opacity-75;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease-in-out, transform 0.1s ease-out;
+  }
+
+  .cursor-outline {
+    @apply fixed w-8 h-8 rounded-full border border-primary z-[9998] pointer-events-none opacity-75;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease-in-out, height 0.3s ease-in-out,
+      opacity 0.3s ease-in-out;
+  }
+
+  /* Hide default cursor when custom cursor is active */
+  body:has(.cursor-dot:not(.hidden)) {
+    cursor: none;
+  }
+
+  /* Cursor hover effect */
+  a:hover ~ .cursor-dot,
+  button:hover ~ .cursor-dot {
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+
+  a:hover ~ .cursor-outline,
+  button:hover ~ .cursor-outline {
+    @apply w-12 h-12;
+  }
+
+  /* Smooth scrolling utility class */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    transition: all 0.2s ease-out;
+    overscroll-behavior: contain;
+    scroll-snap-type: y proximity;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+
+  /* Sidebar scrollbar styling */
+  aside::-webkit-scrollbar,
+  .sidebar-content::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  aside::-webkit-scrollbar-track,
+  .sidebar-content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  aside::-webkit-scrollbar-thumb,
+  .sidebar-content::-webkit-scrollbar-thumb {
+    background: rgba(144, 4, 204, 0.2);
+    border-radius: 10px;
+  }
+
+  aside::-webkit-scrollbar-thumb:hover,
+  .sidebar-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(144, 4, 204, 0.4);
+  }
 }
