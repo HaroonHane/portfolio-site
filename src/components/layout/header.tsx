@@ -5,7 +5,7 @@ import { useTheme } from "@/context/theme-context";
 import { Moon, Sun, Home, User, FileText, Briefcase, Mail } from "lucide-react";
 
 export function Header() {
-  const { isSidebarOpen, toggleSidebar, activeSection, scrollToSection } = useNavigation();
+  const { isSidebarOpen, activeSection, scrollToSection } = useNavigation();
   const { theme, toggleTheme } = useTheme();
   const isScrolled = activeSection !== "home";
 

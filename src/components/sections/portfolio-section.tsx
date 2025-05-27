@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { SectionTransition } from "@/components/animations/section-transition";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

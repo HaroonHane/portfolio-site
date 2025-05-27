@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SectionTransition } from "@/components/animations/section-transition";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ContactInfo } from "@/types";
+import { ContactInfo } from "@/types/index";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import {

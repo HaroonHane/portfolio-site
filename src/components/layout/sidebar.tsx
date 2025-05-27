@@ -1,18 +1,51 @@
 "use client";
 
 import { useNavigation } from "@/context/navigation-context";
-import { useTheme } from "@/context/theme-context";
-import { Home, User, FileText, Briefcase, Mail, GithubIcon, LinkedinIcon, TwitterIcon, InstagramIcon, ChevronLeft, ChevronRight, Moon, Sun } from "lucide-react";
+import {
+  Home,
+  User,
+  FileText,
+  Briefcase,
+  Mail,
+  GithubIcon,
+  LinkedinIcon,
+  TwitterIcon,
+  InstagramIcon,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export function Sidebar() {
-  const { isSidebarOpen, toggleSidebar, closeSidebar, activeSection, scrollToSection } = useNavigation();
-  const { theme } = useTheme();
+  const {
+    isSidebarOpen,
+    toggleSidebar,
+    closeSidebar,
+    activeSection,
+    scrollToSection,
+  } = useNavigation();
+  const prefersReducedMotion = useReducedMotion();
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Ensure component is mounted before animations
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const navItems = [
     { title: "Home", href: "#home", icon: <Home className="h-5 w-5" /> },
     { title: "About", href: "#about", icon: <User className="h-5 w-5" /> },
-    { title: "Resume", href: "#resume", icon: <FileText className="h-5 w-5" /> },
-    { title: "Portfolio", href: "#portfolio", icon: <Briefcase className="h-5 w-5" /> },
+    {
+      title: "Resume",
+      href: "#resume",
+      icon: <FileText className="h-5 w-5" />,
+    },
+    {
+      title: "Portfolio",
+      href: "#portfolio",
+      icon: <Briefcase className="h-5 w-5" />,
+    },
     { title: "Contact", href: "#contact", icon: <Mail className="h-5 w-5" /> },
   ];
 
@@ -21,38 +54,104 @@ export function Sidebar() {
     closeSidebar();
   };
 
-  // Mobile open button - positioned in the top left
+  // Animation variants for better organization
+  const sidebarVariants = {
+    mobile: {
+      closed: {
+        x: "-100%",
+        opacity: 0,
+        rotateY: prefersReducedMotion ? 0 : 30,
+        scale: prefersReducedMotion ? 1 : 0.95,
+      },
+      open: {
+        x: 0,
+        opacity: 1,
+        rotateY: 0,
+        scale: 1,
+      },
+    },
+    desktop: {
+      closed: { width: 40 },
+      open: { width: 256 },
+    },
+  };
+
+  const buttonVariants = {
+    closed: {
+      x: prefersReducedMotion ? 0 : -20,
+      opacity: 0,
+      scale: prefersReducedMotion ? 1 : 0.8,
+    },
+    open: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+    },
+  };
+
+  const contentVariants = {
+    closed: {
+      opacity: 0,
+      x: prefersReducedMotion ? 0 : -20,
+      scale: prefersReducedMotion ? 1 : 0.95,
+    },
+    open: {
+      opacity: 1,
+      x: 0,
+      scale: 1,
+    },
+  };
+
+  const toggleIconVariants = {
+    closed: { rotate: 180 },
+    open: { rotate: 0 },
+  };
+
+  // Spring configuration for smooth animations
+  const springConfig = {
+    type: "spring" as const,
+    stiffness: prefersReducedMotion ? 400 : 300,
+    damping: prefersReducedMotion ? 40 : 30,
+    mass: 1,
+  };
+
+  const fastSpringConfig = {
+    type: "spring" as const,
+    stiffness: 400,
+    damping: 35,
+    mass: 0.8,
+  };
+
+  if (!isMounted) {
+    return null; // Prevent hydration mismatch
+  }
+
+  // Enhanced Mobile open button with better animations
   const MobileOpenButton = () => (
-    <button
-      className={`fixed top-3 left-3 z-[60] flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 backdrop-blur-xl border border-primary/30 shadow-md hover:bg-primary/20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/20 lg:hidden ${
-        isSidebarOpen ? "opacity-0 pointer-events-none translate-x-[-20px]" : "opacity-100 translate-x-0"
-      }`}
+    <motion.button
+      className="fixed top-3 left-3 z-[60] flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 backdrop-blur-xl border border-primary/30 shadow-md hover:bg-primary/20 hover:shadow-lg hover:shadow-primary/20 lg:hidden"
       onClick={toggleSidebar}
       aria-label="Open sidebar"
+      initial={false}
+      variants={buttonVariants}
+      animate={isSidebarOpen ? "closed" : "open"}
+      transition={fastSpringConfig}
+      whileHover={{
+        scale: 1.1,
+        backgroundColor: "rgba(var(--primary), 0.2)",
+        transition: { duration: 0.2 },
+      }}
+      whileTap={{ scale: 0.95 }}
+      style={{ pointerEvents: isSidebarOpen ? "none" : "auto" }}
     >
-      <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-    </button>
-  );
-
-  // Centered sidebar toggle button - only visible on desktop
-  const CenteredSidebarToggle = () => (
-    <button
-      className={`fixed top-1/2 transform -translate-y-1/2 z-[60] hidden lg:flex items-center justify-center w-6 h-16 sm:w-8 sm:h-24 rounded-r-md sm:rounded-r-lg bg-primary/10 backdrop-blur-xl border-y border-r border-primary/30 shadow-md hover:bg-primary/20 hover:scale-105 transition-all duration-300 ${
-        isSidebarOpen ? "left-64" : "left-0"
-      }`}
-      onClick={toggleSidebar}
-      aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-    >
-      <div className="flex flex-col items-center justify-center gap-1 sm:gap-2">
-        <span className="text-primary">
-          {isSidebarOpen ? (
-            <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-          ) : (
-            <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
-          )}
-        </span>
-      </div>
-    </button>
+      <motion.div
+        initial={false}
+        animate={{ rotate: isSidebarOpen ? -90 : 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
+        <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+      </motion.div>
+    </motion.button>
   );
 
   return (
@@ -60,55 +159,124 @@ export function Sidebar() {
       {/* Mobile open button */}
       <MobileOpenButton />
 
-      {/* Centered sidebar toggle - desktop only */}
-      <CenteredSidebarToggle />
+      {/* Mobile sidebar - Fixed to work properly */}
+      <AnimatePresence>
+        {(isSidebarOpen || true) && (
+          <motion.div
+            className="fixed inset-y-0 left-0 z-50 w-64 bg-background/80 backdrop-blur-xl border-r border-border/40 lg:hidden overflow-y-auto"
+            initial={{
+              x: "-100%",
+              opacity: 0,
+              rotateY: prefersReducedMotion ? 0 : 30,
+            }}
+            animate={
+              isSidebarOpen
+                ? { x: 0, opacity: 1, rotateY: 0 }
+                : {
+                    x: "-100%",
+                    opacity: 0,
+                    rotateY: prefersReducedMotion ? 0 : 30,
+                  }
+            }
+            transition={springConfig}
+            style={{ originX: 0 }}
+          >
+            {/* Close button inside mobile sidebar */}
+            <motion.button
+              className="absolute top-3 right-3 z-[60] flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 backdrop-blur-xl border border-primary/30 shadow-md hover:bg-primary/20"
+              onClick={closeSidebar}
+              aria-label="Close sidebar"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+            </motion.button>
 
-      {/* Mobile sidebar */}
-      <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-background/80 backdrop-blur-xl border-r border-border/40 transform transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        {/* Close button inside mobile sidebar */}
-        <button
-          className="absolute top-3 right-3 z-[60] flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 backdrop-blur-xl border border-primary/30 shadow-md hover:bg-primary/20 transition-all duration-300 hover:scale-110"
-          onClick={closeSidebar}
-          aria-label="Close sidebar"
+            <div className="pt-16">
+              <SidebarContent
+                activeSection={activeSection}
+                handleNavClick={handleNavClick}
+                navItems={navItems}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop sidebar with better animations */}
+      <div className="hidden lg:block">
+        <motion.aside
+          className="fixed left-0 top-0 h-screen flex flex-col border-r border-border/40 bg-background/80 backdrop-blur-xl"
+          initial={false}
+          animate={{
+            width: isSidebarOpen ? 256 : 40,
+          }}
+          transition={springConfig}
+          style={{ originX: 0 }}
         >
-          <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-        </button>
+          {/* Toggle button */}
+          <motion.button
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-[60] flex items-center justify-center w-10 h-12"
+            onClick={toggleSidebar}
+            aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+            initial={false}
+            animate={{
+              x: isSidebarOpen ? 0 : 2,
+            }}
+            transition={{
+              duration: 0.5,
+              delay: 0.1,
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="flex items-center justify-center w-6 h-12 rounded-r-lg bg-transparent backdrop-blur-xl border-primary/30 shadow-md hover:scale-115 transition-all duration-100 cursor-pointer">
+              <motion.span
+                className="text-primary"
+                initial={false}
+                animate={{ rotate: isSidebarOpen ? 0 : 180 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </motion.span>
+            </div>
+          </motion.button>
 
-        <div className="pt-16"> {/* Added padding top for header */}
-          <SidebarContent
-            activeSection={activeSection}
-            handleNavClick={handleNavClick}
-            theme={theme}
-            navItems={navItems}
-          />
-        </div>
+          {/* Sidebar content */}
+          <motion.div
+            className="pt-16 w-64 overflow-hidden"
+            initial={false}
+            animate={{
+              opacity: isSidebarOpen ? 1 : 0,
+              x: isSidebarOpen ? 0 : -20,
+            }}
+            transition={{
+              duration: 0.3,
+              delay: isSidebarOpen ? 0.2 : 0,
+            }}
+          >
+            <SidebarContent
+              activeSection={activeSection}
+              handleNavClick={handleNavClick}
+              navItems={navItems}
+            />
+          </motion.div>
+        </motion.aside>
       </div>
 
-      {/* Desktop sidebar - collapsible on larger screens */}
-      <aside className={`hidden lg:flex fixed left-0 top-0 h-screen flex-col border-r border-border/40 bg-background/80 backdrop-blur-xl transition-all duration-300 ${
-        isSidebarOpen ? "w-64 overflow-y-auto" : "w-0 opacity-0 overflow-hidden"
-      }`}>
-        <div className="pt-16 w-64"> {/* Added padding top for header */}
-          <SidebarContent
-            activeSection={activeSection}
-            handleNavClick={handleNavClick}
-            theme={theme}
-            navItems={navItems}
-          />
-        </div>
-      </aside>
-
       {/* Overlay for mobile */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={closeSidebar}
-        />
-      )}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={closeSidebar}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }
@@ -116,15 +284,12 @@ export function Sidebar() {
 function SidebarContent({
   activeSection,
   handleNavClick,
-  theme,
-  navItems
+  navItems,
 }: {
   activeSection: string;
   handleNavClick: (section: string) => void;
-  theme: "dark" | "light";
   navItems: { title: string; href: string; icon: React.ReactNode }[];
 }) {
-  const { toggleTheme } = useTheme();
   return (
     <div className="flex h-full flex-col glass-card overflow-y-auto max-h-screen sidebar-content">
       {/* Profile section */}
@@ -136,21 +301,31 @@ function SidebarContent({
             className="w-full h-full object-cover"
           />
         </div>
-        <h1 className="text-xl font-bold gradient-text">
-          Haroon Aawan
-        </h1>
+        <h1 className="text-xl font-bold gradient-text">Haroon Aawan</h1>
         <p className="text-muted-foreground mt-1">Web Developer</p>
         <div className="flex gap-3 mt-4">
-          <a href="#" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-110">
+          <a
+            href="#"
+            className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-110"
+          >
             <GithubIcon className="h-4 w-4" />
           </a>
-          <a href="#" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-110">
+          <a
+            href="#"
+            className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-110"
+          >
             <LinkedinIcon className="h-4 w-4" />
           </a>
-          <a href="#" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-110">
+          <a
+            href="#"
+            className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-110"
+          >
             <TwitterIcon className="h-4 w-4" />
           </a>
-          <a href="#" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-110">
+          <a
+            href="#"
+            className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-110"
+          >
             <InstagramIcon className="h-4 w-4" />
           </a>
         </div>
@@ -172,10 +347,6 @@ function SidebarContent({
                   }`}
                   onClick={(e) => {
                     e.preventDefault();
-                    // Close sidebar on mobile after clicking
-                    if (window.innerWidth < 1024) {
-                      // We don't need to call closeSidebar here since it's called in handleNavClick
-                    }
                     handleNavClick(item.href.substring(1));
                   }}
                 >

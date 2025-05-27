@@ -11,9 +11,15 @@ interface NavigationContextType {
   scrollToSection: (sectionId: string) => void;
 }
 
-const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
+const NavigationContext = createContext<NavigationContextType | undefined>(
+  undefined
+);
 
-export function NavigationProvider({ children }: { children: React.ReactNode }) {
+export function NavigationProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isScrolling, setIsScrolling] = useState(false);
@@ -36,12 +42,13 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
       // Get the element's position relative to the viewport
       const elementPosition = element.getBoundingClientRect().top;
       // Add current scroll position to get absolute position
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - headerOffset;
 
       // Scroll to the element with smooth behavior
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
 
       // Reset scrolling flag after animation completes
@@ -84,12 +91,12 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
       setTouchStartX(null);
     };
 
-    document.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchend', handleTouchEnd);
+    document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchend", handleTouchEnd);
 
     return () => {
-      document.removeEventListener('touchstart', handleTouchStart);
-      document.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchend", handleTouchEnd);
     };
   }, [touchStartX]);
 
@@ -133,14 +140,21 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
           const visiblePercentage = visibleHeight / sectionHeight;
 
           // Special case for the top section - if it's at the top of the page
-          if (section === "home" && rect.top <= adjustedViewportTop && rect.bottom > adjustedViewportTop) {
+          if (
+            section === "home" &&
+            rect.top <= adjustedViewportTop &&
+            rect.bottom > adjustedViewportTop
+          ) {
             currentSection = "home";
             break;
           }
 
           // For other sections, use the one with the highest visible percentage
           // But add a threshold to prevent tiny visibility from triggering
-          if (visiblePercentage > maxVisiblePercentage && visiblePercentage > 0.2) {
+          if (
+            visiblePercentage > maxVisiblePercentage &&
+            visiblePercentage > 0.2
+          ) {
             maxVisiblePercentage = visiblePercentage;
             currentSection = section;
           }

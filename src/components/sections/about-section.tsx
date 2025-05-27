@@ -2,7 +2,7 @@
 
 import { SectionTransition } from "@/components/animations/section-transition";
 import { Card, CardContent } from "@/components/ui/card";
-import { Skill } from "@/types";
+import { Skill } from "@/types/index";
 import { motion } from "framer-motion";
 import { Code, Palette, Lightbulb, Rocket } from "lucide-react";
 import {

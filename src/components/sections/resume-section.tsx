@@ -2,7 +2,7 @@
 
 import { SectionTransition } from "@/components/animations/section-transition";
 import { Card, CardContent } from "@/components/ui/card";
-import { Education, Experience, Service } from "@/types";
+import { Education, Experience, Service } from "@/types/index";
 import { motion } from "framer-motion";
 import {
   Briefcase,
