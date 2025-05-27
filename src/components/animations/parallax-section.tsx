@@ -21,22 +21,22 @@ export function ParallaxSection({
   overflow = false,
 }: ParallaxSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
-  
+
   // Calculate transform based on direction and speed
   const yRange = direction === "vertical" ? [0, reverse ? -100 * speed : 100 * speed] : [0, 0];
   const xRange = direction === "horizontal" ? [0, reverse ? -100 * speed : 100 * speed] : [0, 0];
-  
+
   const y = useTransform(scrollYProgress, [0, 1], yRange);
   const x = useTransform(scrollYProgress, [0, 1], xRange);
-  
+
   return (
-    <div 
-      ref={ref} 
+    <div
+      ref={ref}
       className={`${className} ${overflow ? "" : "overflow-hidden"}`}
     >
       <motion.div
@@ -58,23 +58,23 @@ export function ParallaxBackground({
   overlay = true,
 }: ParallaxSectionProps & { bgImage: string; overlay?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
-  
+
   // Slower movement for background
   const y = useTransform(scrollYProgress, [0, 1], [0, 30 * speed]);
-  
+
   return (
-    <div 
-      ref={ref} 
+    <div
+      ref={ref}
       className={`${className} relative overflow-hidden`}
     >
       <motion.div
         className="absolute inset-0 w-full h-full"
-        style={{ 
+        style={{
           y,
           backgroundImage: `url(${bgImage})`,
           backgroundSize: "cover",
@@ -104,31 +104,42 @@ export function RevealSection({
   threshold?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
-  
-  // Calculate transform based on direction
-  let x = 0;
-  let y = 0;
-  
+
+  // Calculate transform based on direction - hooks must be called unconditionally
+  const xUp = useTransform(scrollYProgress, [0, threshold, 1], [0, 0, 0]);
+  const yUp = useTransform(scrollYProgress, [0, threshold, 1], [100, 0, 0]);
+  const yDown = useTransform(scrollYProgress, [0, threshold, 1], [-100, 0, 0]);
+  const xLeft = useTransform(scrollYProgress, [0, threshold, 1], [100, 0, 0]);
+  const xRight = useTransform(scrollYProgress, [0, threshold, 1], [-100, 0, 0]);
+
+  // Select the appropriate transform values
+  let x = xUp;
+  let y = xUp;
+
   if (direction === "up") {
-    y = useTransform(scrollYProgress, [0, threshold, 1], [100, 0, 0]);
+    x = xUp;
+    y = yUp;
   } else if (direction === "down") {
-    y = useTransform(scrollYProgress, [0, threshold, 1], [-100, 0, 0]);
+    x = xUp;
+    y = yDown;
   } else if (direction === "left") {
-    x = useTransform(scrollYProgress, [0, threshold, 1], [100, 0, 0]);
+    x = xLeft;
+    y = xUp;
   } else if (direction === "right") {
-    x = useTransform(scrollYProgress, [0, threshold, 1], [-100, 0, 0]);
+    x = xRight;
+    y = xUp;
   }
-  
+
   const opacity = useTransform(scrollYProgress, [0, threshold, 1], [0, 1, 1]);
-  
+
   return (
-    <div 
-      ref={ref} 
+    <div
+      ref={ref}
       className={className}
     >
       <motion.div

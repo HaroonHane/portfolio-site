@@ -1,6 +1,6 @@
 "use client";
 
-import { useNavigation } from "@/context/navigation-context";
+
 import { HomeSection } from "@/components/sections/home-section";
 import { AboutSection } from "@/components/sections/about-section";
 import { ResumeSection } from "@/components/sections/resume-section";

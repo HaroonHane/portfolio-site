@@ -102,9 +102,9 @@ export function NavigationProvider({
 
   useEffect(() => {
     // Debounce function to prevent rapid firing
-    const debounce = (callback: Function, wait: number) => {
+    const debounce = (callback: (...args: unknown[]) => void, wait: number) => {
       let timeoutId: NodeJS.Timeout | null = null;
-      return (...args: any[]) => {
+      return (...args: unknown[]) => {
         if (timeoutId) clearTimeout(timeoutId);
         timeoutId = setTimeout(() => callback(...args), wait);
       };

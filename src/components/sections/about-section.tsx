@@ -86,7 +86,7 @@ export function AboutSection() {
                   <span className="highlight">
                     1.5+ years of hands-on experience
                   </span>
-                  , I've developed a keen eye for detail and the technical
+                  , I&apos;ve developed a keen eye for detail and the technical
                   skills to transform complex requirements into elegant
                   solutions.
                 </p>

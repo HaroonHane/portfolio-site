@@ -24,7 +24,7 @@ import {
   ScrollAnimationItem,
 } from "@/components/animations/scroll-animation";
 import { AnimatedText } from "@/components/animations/animated-text";
-import { ParallaxSection } from "@/components/animations/parallax-section";
+
 
 const contactInfo: ContactInfo[] = [
   {
@@ -285,7 +285,7 @@ export function ContactSection() {
                     >
                       <CheckCircle className="h-5 w-5 mr-2 flex-shrink-0" />
                       <span>
-                        Thank you for your message! I'll get back to you soon.
+                        Thank you for your message! I&apos;ll get back to you soon.
                       </span>
                     </motion.div>
                   )}

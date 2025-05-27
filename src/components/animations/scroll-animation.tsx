@@ -4,8 +4,6 @@ import { ReactNode, useRef } from "react";
 import {
   motion,
   useInView,
-  useScroll,
-  useTransform,
   Variants,
 } from "framer-motion";
 

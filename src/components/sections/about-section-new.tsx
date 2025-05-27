@@ -78,7 +78,7 @@ export function AboutSection() {
 
               <ParallaxSection speed={0.1} direction="vertical">
                 <p className="mb-4 text-foreground/90 text-sm leading-relaxed">
-                  As a <span className="highlight">passionate front-end developer</span>, I specialize in creating <span className="highlight">visually stunning</span> and <span className="highlight">highly interactive</span> web experiences. With <span className="highlight">1.5+ years of hands-on experience</span>, I've developed a keen eye for detail and the technical skills to transform complex requirements into elegant solutions.
+                  As a <span className="highlight">passionate front-end developer</span>, I specialize in creating <span className="highlight">visually stunning</span> and <span className="highlight">highly interactive</span> web experiences. With <span className="highlight">1.5+ years of hands-on experience</span>, I&apos;ve developed a keen eye for detail and the technical skills to transform complex requirements into elegant solutions.
                 </p>
               </ParallaxSection>
 

@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export function Sidebar() {
   const {
@@ -55,27 +56,6 @@ export function Sidebar() {
   };
 
   // Animation variants for better organization
-  const sidebarVariants = {
-    mobile: {
-      closed: {
-        x: "-100%",
-        opacity: 0,
-        rotateY: prefersReducedMotion ? 0 : 30,
-        scale: prefersReducedMotion ? 1 : 0.95,
-      },
-      open: {
-        x: 0,
-        opacity: 1,
-        rotateY: 0,
-        scale: 1,
-      },
-    },
-    desktop: {
-      closed: { width: 40 },
-      open: { width: 256 },
-    },
-  };
-
   const buttonVariants = {
     closed: {
       x: prefersReducedMotion ? 0 : -20,
@@ -87,24 +67,6 @@ export function Sidebar() {
       opacity: 1,
       scale: 1,
     },
-  };
-
-  const contentVariants = {
-    closed: {
-      opacity: 0,
-      x: prefersReducedMotion ? 0 : -20,
-      scale: prefersReducedMotion ? 1 : 0.95,
-    },
-    open: {
-      opacity: 1,
-      x: 0,
-      scale: 1,
-    },
-  };
-
-  const toggleIconVariants = {
-    closed: { rotate: 180 },
-    open: { rotate: 0 },
   };
 
   // Spring configuration for smooth animations
@@ -295,9 +257,11 @@ function SidebarContent({
       {/* Profile section */}
       <div className="flex flex-col items-center p-6 border-b border-border/40">
         <div className="h-24 w-24 rounded-full bg-primary/20 mb-4 overflow-hidden shadow-lg">
-          <img
+          <Image
             src="/images/profile.jpg"
             alt="Haroon Aawan"
+            width={96}
+            height={96}
             className="w-full h-full object-cover"
           />
         </div>
